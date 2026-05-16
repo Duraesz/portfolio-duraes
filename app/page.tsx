@@ -24,9 +24,9 @@ const heroStats = [
 ];
 
 const projectMetrics = [
-  { value: '+100', label: 'USUÁRIOS PSICÓLOGOS ATIVOS' },
+  { value: '+100', label: 'USUÁRIOS ATIVOS NO NICE-APP' },
   { value: '+20', label: 'EMPRESAS UTILIZANDO' },
-  { value: '+3000', label: 'ETIQUETAS GERADAS' },
+  { value: '+50000', label: 'ETIQUETAS GERADAS' },
   { value: '↓', label: 'REDUÇÃO DE ERROS' },
 ];
 
@@ -233,10 +233,10 @@ export default function Home() {
                 <span className="text-[10px] text-purple-800 tracking-widest">03_</span>
                 <span className="text-[9px] text-purple-700 border border-purple-900 px-2 py-0.5 tracking-widest animate-pulse">EM CONSTRUÇÃO</span>
               </div>
-              <h2 className="text-sm tracking-widest text-gray-700">PRÓXIMO PROJETO</h2>
+              <h2 className="text-sm tracking-widest text-gray-700">KAIZEN</h2>
               <div className="mt-4 flex gap-1">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-1 flex-1 bg-purple-950 rounded-sm" style={{ opacity: i < 3 ? 0.8 : 0.2 }} />
+                  <div key={i} className="h-1 flex-1 bg-purple-950 rounded-sm" style={{ opacity: i < 5  ? 0.8 : 0.2 }} />
                 ))}
               </div>
             </div>
@@ -247,7 +247,7 @@ export default function Home() {
             {projectMetrics.map((m) => (
               <div key={m.label} className="border border-purple-900 p-4 text-center hover:border-purple-700 transition-colors duration-300">
                 <span className="text-xl sm:text-2xl text-purple-300 font-mono">{m.value}</span>
-                <p className="text-[9px] text-gray-600 tracking-widest mt-2 leading-4">{m.label}</p>
+                <p className="text-[9px] text-gray-500 tracking-widest mt-2 leading-4">{m.label}</p>
               </div>
             ))}
           </div>
@@ -341,7 +341,7 @@ export default function Home() {
       <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-24">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col items-center text-center">
           <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6">// CONTACT_INIT.exe</span>
-          <h1 className="text-2xl sm:text-4xl tracking-[0.2em] text-gray-200 mb-4">VAMOS CONVERSAR?</h1>
+          <h1 className="text-2xl sm:text-4xl tracking-[0.3em] text-gray-200 mb-4">VAMOS CONVERSAR?</h1>
           <p className="text-xs text-gray-600 tracking-widest mb-10 max-w-sm leading-6">
             ABERTO A OPORTUNIDADES, PROJETOS E COLABORAÇÕES.
           </p>
