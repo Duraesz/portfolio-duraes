@@ -1,6 +1,15 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { ScanLine, NoiseOverlay, FakeTerminal, TypewriterText, GlitchText } from './components';
+import {
+  ScanLine,
+  NoiseOverlay,
+  FakeTerminal,
+  TypewriterText,
+  ScrambleText,
+  useKonamiCode,
+  KonamiEasterEgg,
+  AnimatedMetric,
+} from './components';
 
 const lines = [
   "CRIANDO",
@@ -26,7 +35,7 @@ const heroStats = [
 const projectMetrics = [
   { value: '+100', label: 'USUÁRIOS ATIVOS NO NICE-APP' },
   { value: '+20', label: 'EMPRESAS UTILIZANDO' },
-  { value: '+50000', label: 'ETIQUETAS GERADAS' },
+  { value: '+100000', label: 'ETIQUETAS GERADAS' },
   { value: '↓', label: 'REDUÇÃO DE ERROS' },
 ];
 
@@ -65,6 +74,7 @@ const skillLevels = [
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
+  const konamiActivated = useKonamiCode();
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -74,10 +84,12 @@ export default function Home() {
 
   return (
     <div style={{ background: 'linear-gradient(180deg, #000000 0%, #1a0030 35%, #0d0020 60%, #000000 100%)' }}>
+
+      <KonamiEasterEgg activated={konamiActivated} />
+
       <ScanLine />
       <NoiseOverlay />
 
-      {/* Linhas decorativas laterais */}
       <div className="fixed left-6 top-0 bottom-0 w-px bg-purple-800 opacity-40 z-30 hidden sm:block" />
       <div className="fixed right-6 top-0 bottom-0 w-px bg-purple-800 opacity-20 z-30 hidden sm:block" />
       <div className="fixed left-8 top-1/2 -translate-y-1/2 flex-col gap-8 opacity-20 text-[10px] text-purple-400 select-none z-30 hidden sm:flex">
@@ -86,7 +98,6 @@ export default function Home() {
         ))}
       </div>
 
-      {/* ── NAV ── */}
       <header
         className="fixed top-0 left-0 right-0 z-[60] border-b border-purple-900"
         style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
@@ -101,7 +112,7 @@ export default function Home() {
 
           <div className="hidden sm:flex justify-center font-mono">
             <h1 className="text-sm font-light tracking-[0.3em]">
-              <GlitchText text="DEVELOPER" />
+              <ScrambleText text="DEVELOPER" delay={600} duration={1400} />
             </h1>
           </div>
 
@@ -121,7 +132,6 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── HERO ── */}
       <div className="flex flex-col min-h-screen px-4 sm:px-10 text-white relative pt-20">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col flex-1">
 
@@ -129,7 +139,6 @@ export default function Home() {
             <span className="text-[10px] text-purple-500 tracking-[0.3em] sm:tracking-[0.4em]">// BIO_INIT.exe</span>
           </div>
 
-          {/* Texto + separador + terminal */}
           <div
             className="flex flex-col sm:flex-row flex-1 items-start sm:items-center ml-1 gap-6 sm:gap-0 py-8 sm:py-0"
             style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.8s ease 0.6s' }}
@@ -140,7 +149,6 @@ export default function Home() {
                 <TypewriterText text={fullText} />
               </p>
 
-              {/* CTA */}
               <button
                 onClick={scrollToProjects}
                 className="mt-8 text-[10px] tracking-[0.3em] font-mono text-gray-400 hover:text-purple-400 border border-purple-900 hover:border-purple-600 px-5 py-3 transition-all duration-300 group"
@@ -150,7 +158,6 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Separador com estatísticas */}
             <div className="hidden sm:flex flex-col items-center gap-5 px-10 opacity-70">
               <div className="w-px h-12 bg-purple-800" />
               {heroStats.map((stat, i) => (
@@ -166,7 +173,6 @@ export default function Home() {
             <FakeTerminal />
           </div>
 
-          {/* Scroll indicator */}
           <div className="flex justify-center pb-8 opacity-40">
             <div className="flex flex-col items-center gap-2 animate-bounce">
               <span className="text-[9px] text-purple-500 tracking-[0.3em] font-mono">SCROLL</span>
@@ -179,7 +185,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── PROJECTS ── */}
       <div id="projects" className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col">
           <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// PROJECTS_INIT.exe</span>
@@ -227,7 +232,6 @@ export default function Home() {
               </a>
             </div>
 
-            {/* Card em construção */}
             <div className="border border-purple-950 p-4 sm:p-6 opacity-50 group md:col-span-2 md:max-w-sm md:mx-auto w-full">
               <div className="flex items-center gap-3 mb-2">
                 <span className="text-[10px] text-purple-800 tracking-widest">03_</span>
@@ -236,25 +240,20 @@ export default function Home() {
               <h2 className="text-sm tracking-widest text-gray-700">KAIZEN</h2>
               <div className="mt-4 flex gap-1">
                 {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-1 flex-1 bg-purple-950 rounded-sm" style={{ opacity: i < 5  ? 0.8 : 0.2 }} />
+                  <div key={i} className="h-1 flex-1 bg-purple-950 rounded-sm" style={{ opacity: i < 5 ? 0.8 : 0.2 }} />
                 ))}
               </div>
             </div>
           </div>
 
-          {/* Métricas */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mt-10 w-full">
             {projectMetrics.map((m) => (
-              <div key={m.label} className="border border-purple-900 p-4 text-center hover:border-purple-700 transition-colors duration-300">
-                <span className="text-xl sm:text-2xl text-purple-300 font-mono">{m.value}</span>
-                <p className="text-[9px] text-gray-500 tracking-widest mt-2 leading-4">{m.label}</p>
-              </div>
+              <AnimatedMetric key={m.label} rawValue={m.value} label={m.label} />
             ))}
           </div>
         </div>
       </div>
 
-      {/* ── FORMAÇÃO ── */}
       <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col">
           <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// EDUCATION_INIT.exe</span>
@@ -262,7 +261,6 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
 
-            {/* Graduação */}
             <div className="border border-purple-800 p-5 sm:p-6 hover:border-purple-500 transition-colors duration-300">
               <span className="text-[9px] text-purple-600 tracking-[0.3em]">GRADUAÇÃO</span>
               <h2 className="text-sm tracking-widest mt-3 mb-1 text-gray-200">BACHARELADO EM ENGENHARIA DE SOFTWARE</h2>
@@ -277,7 +275,6 @@ export default function Home() {
               <p className="text-[11px] text-gray-700 tracking-widest mt-1">PROGRESSO — 1/8 SEMESTRES</p>
             </div>
 
-            {/* Cursos Alura */}
             <div className="border border-purple-900 p-5 sm:p-6 hover:border-purple-500 transition-colors duration-300">
               <span className="text-[9px] text-purple-600 tracking-[0.3em]">CURSOS EXTRACURRICULARES</span>
               <h2 className="text-sm tracking-widest mt-3 mb-4 text-gray-200">ALURA</h2>
@@ -296,13 +293,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── SKILLS ── */}
       <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col">
           <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// SKILLS_INIT.exe</span>
           <h1 className="text-purple-500 tracking-[0.4em] text-[13px] sm:text-[15px] mx-auto mb-3">SKILLS</h1>
 
-          {/* Legenda */}
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             {skillLevels.map(({ label, color }) => (
               <div key={label} className="flex items-center gap-2">
@@ -337,7 +332,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* ── CONTATO ── */}
       <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-24">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col items-center text-center">
           <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6">// CONTACT_INIT.exe</span>
@@ -368,10 +362,21 @@ export default function Home() {
               LINKEDIN →
             </a>
           </div>
+
+          <div className="mt-16 flex flex-col items-center gap-3 opacity-30 hover:opacity-30 transition-opacity duration-500">
+            <p className="text-[9px] text-purple-600 tracking-[0.4em] font-mono">// ALGO ESTÁ ESCONDIDO AQUI</p>
+            <div className="flex items-center gap-1.5">
+              {['↑', '↑', '↓', '↓', '←', '→'].map((k, i) => (
+                <span key={i} className="text-[9px] text-purple-800 border border-purple-900 px-1.5 py-0.5 font-mono">
+                  {k}
+                </span>
+              ))}
+            </div>
+            <p className="text-[8px] text-purple-900 tracking-[0.3em] font-mono">PRESSIONE NO TECLADO</p>
+          </div>
         </div>
       </div>
 
-      {/* ── FOOTER ── */}
       <footer className="border-t border-purple-950 px-4 sm:px-10 py-6 font-mono">
         <div className="w-full max-w-screen-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <span className="text-[9px] text-gray-700 tracking-widest">
