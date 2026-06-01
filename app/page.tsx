@@ -21,7 +21,6 @@ const lines = [
 const fullText = lines.join('\n');
 
 const navLinks = [
-  { label: 'CONTATO', href: 'https://wa.me/5511944488221' },
   { label: 'GMAIL', href: 'mailto:pablosantosduraes6@gmail.com' },
   { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/pablo-dur%C3%A3es-781421320/' },
 ];
@@ -341,13 +340,6 @@ export default function Home() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="https://wa.me/5511944488221"
-              target="_blank" rel="noopener noreferrer"
-              className="text-[11px] tracking-[0.3em] font-mono text-gray-300 hover:text-white border border-purple-700 hover:border-purple-400 px-6 py-3 transition-all duration-300"
-            >
-              WHATSAPP →
-            </a>
             <a
               href="mailto:pablosantosduraes6@gmail.com"
               className="text-[11px] tracking-[0.3em] font-mono text-gray-500 hover:text-gray-300 border border-purple-950 hover:border-purple-700 px-6 py-3 transition-all duration-300"
