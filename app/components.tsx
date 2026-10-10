@@ -1,46 +1,55 @@
 'use client';
-import { useEffect, useState, useRef, KeyboardEvent } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { site } from './site';
 
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+
+const terminalLines = [
+  { text: '$ whoami', isCommand: true },
+  { text: '> pablo.duraes', isCommand: false },
+  { text: '$ location', isCommand: true },
+  { text: '> são paulo, br', isCommand: false },
+  { text: '$ status', isCommand: true },
+  { text: '> aberto a projetos e colaborações ✓', isCommand: false },
+  { text: '$ experience', isCommand: true },
+  { text: '> aprendiz @ suzano s.a.', isCommand: false },
+  { text: '$ stack --top', isCommand: true },
+  { text: '> react, react-native, next, node', isCommand: false },
+  { text: '$ contact', isCommand: true },
+  { text: `> ${site.email}`, isCommand: false },
+];
 
 export function FakeTerminal() {
   const [visibleLines, setVisibleLines] = useState(0);
 
-  const terminalLines = [
-    { text: '$ whoami', isCommand: true },
-    { text: '> pablo.duraes', isCommand: false },
-    { text: '$ location', isCommand: true },
-    { text: '> são paulo, br', isCommand: false },
-    { text: '$ status', isCommand: true },
-    { text: '> available for hire ✓', isCommand: false },
-    { text: '$ skills --top', isCommand: true },
-    { text: '> react, react-native, next, node,', isCommand: false },
-    { text: '$ experience', isCommand: true },
-    { text: '> web & mobile dev', isCommand: false },
-    { text: '$ contact', isCommand: true },
-    { text: '> pablosantosduraes6@gmail.com', isCommand: false },
-  ];
-
   useEffect(() => {
+    const reduce = prefersReducedMotion();
     let current = 0;
     const interval = setInterval(() => {
-      current += 1;
+      current = reduce ? terminalLines.length : current + 1;
       setVisibleLines(current);
       if (current >= terminalLines.length) clearInterval(interval);
-    }, 600);
+    }, reduce ? 0 : 450);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div className="flex flex-col w-full sm:w-80 border border-purple-900 bg-black bg-opacity-60 font-mono mt-6 sm:mt-0 flex-shrink-0">
-      <div className="flex items-center gap-2 px-3 py-2 border-b border-purple-900">
-        <span className="w-2 h-2 rounded-full bg-red-600" />
-        <span className="w-2 h-2 rounded-full bg-yellow-600" />
-        <span className="w-2 h-2 rounded-full bg-green-600" />
-        <span className="ml-2 text-[10px] text-purple-700 tracking-widest">terminal — pablo@duraes</span>
+    <div
+      aria-hidden="true"
+      className="flex flex-col w-full lg:w-96 border border-purple-900/80 bg-black/60 font-mono shrink-0 shadow-[0_0_60px_-20px_rgba(147,51,234,0.5)]"
+    >
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-purple-900/80">
+        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+        <span className="ml-2 text-xs text-gray-500">pablo@duraes: ~</span>
       </div>
-      <div className="flex flex-col gap-1 p-4 text-[12px] tracking-wider min-h-48">
+      <div className="flex flex-col gap-1 p-5 text-[13px] min-h-64 break-all">
         {terminalLines.slice(0, visibleLines).map((line, i) => (
-          <span key={i} className={line.isCommand ? 'text-purple-400' : 'text-gray-400'}>
+          <span key={i} className={line.isCommand ? 'text-purple-400' : 'text-gray-300'}>
             {line.text}
           </span>
         ))}
@@ -55,45 +64,37 @@ export function FakeTerminal() {
 
 export function TypewriterText({ text }: { text: string }) {
   const [displayed, setDisplayed] = useState('');
+
   useEffect(() => {
+    const reduce = prefersReducedMotion();
     let i = 0;
-    setDisplayed('');
     const interval = setInterval(() => {
-      setDisplayed(text.slice(0, i + 1));
-      i++;
-      if (i === text.length) clearInterval(interval);
-    }, 50);
+      i = reduce ? text.length : i + 1;
+      setDisplayed(text.slice(0, i));
+      if (i >= text.length) clearInterval(interval);
+    }, reduce ? 0 : 45);
     return () => clearInterval(interval);
   }, [text]);
-  return (
-    <span className="whitespace-pre">
-      {displayed}
-      <span className="animate-pulse text-purple-400 text-2xl">█</span>
-    </span>
-  );
-}
 
-
-export function GlitchText({ text }: { text: string }) {
-  const [glitching, setGlitching] = useState(false);
-  useEffect(() => {
-    const loop = setInterval(() => {
-      setGlitching(true);
-      setTimeout(() => setGlitching(false), 150);
-    }, 3000);
-    return () => clearInterval(loop);
-  }, []);
   return (
-    <span className={`transition-all duration-75 ${glitching ? 'text-purple-400 tracking-widest skew-x-2' : ''}`}>
-      {text}
-    </span>
+    <>
+      <span className="sr-only">{text}</span>
+      {/* O texto invisível reserva o espaço final e evita que o layout "pule" durante a digitação */}
+      <span aria-hidden="true" className="grid whitespace-pre">
+        <span className="invisible col-start-1 row-start-1">{text}█</span>
+        <span className="col-start-1 row-start-1">
+          {displayed}
+          <span className="animate-pulse text-purple-400">█</span>
+        </span>
+      </span>
+    </>
   );
 }
 
 
 export function ScanLine() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-[0.03]">
+    <div className="pointer-events-none fixed inset-0 z-50 overflow-hidden opacity-[0.025]">
       <div
         className="absolute inset-0"
         style={{
@@ -133,10 +134,12 @@ export function ScrambleText({
   delay?: number;
   className?: string;
 }) {
-  const [display, setDisplay] = useState('');
+  const [display, setDisplay] = useState(text);
   const frameRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
+    if (prefersReducedMotion()) return;
+
     const fps = 20;
     const interval = 1000 / fps;
     const totalFrames = duration / interval;
@@ -148,9 +151,7 @@ export function ScrambleText({
         const fixed = Math.floor((elapsed / totalFrames) * text.length);
         let result = '';
         for (let i = 0; i < text.length; i++) {
-          if (text[i] === ' ' || text[i] === '\n') {
-            result += text[i];
-          } else if (i < fixed) {
+          if (text[i] === ' ' || text[i] === '\n' || i < fixed) {
             result += text[i];
           } else {
             result += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
@@ -170,7 +171,12 @@ export function ScrambleText({
     };
   }, [text, duration, delay]);
 
-  return <span className={className}>{display || '\u00A0'}</span>;
+  return (
+    <span className={className}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{display}</span>
+    </span>
+  );
 }
 
 
@@ -180,12 +186,12 @@ const KONAMI_SEQ = [
   'ArrowLeft', 'ArrowRight',
 ];
 
-export function useKonamiCode() {
+function useKonamiCode() {
   const [activated, setActivated] = useState(false);
 
   useEffect(() => {
     let seq: string[] = [];
-    const handler = (e: globalThis.KeyboardEvent) => {
+    const handler = (e: KeyboardEvent) => {
       seq = [...seq, e.key].slice(-KONAMI_SEQ.length);
       if (
         seq.length === KONAMI_SEQ.length &&
@@ -214,7 +220,8 @@ interface Particle {
   size: number; char: string; color: string;
 }
 
-export function KonamiEasterEgg({ activated }: { activated: boolean }) {
+export function KonamiEasterEgg() {
+  const activated = useKonamiCode();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animRef = useRef<number>(0);
   const particles = useRef<Particle[]>([]);
@@ -310,7 +317,7 @@ export function KonamiEasterEgg({ activated }: { activated: boolean }) {
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className="konami-reveal font-mono text-center">
-            <p className="text-xs text-purple-400 tracking-[0.5em] mb-3">// ACCESS_GRANTED.exe</p>
+            <p className="text-xs text-purple-400 tracking-[0.5em] mb-3">{'// ACCESS_GRANTED.exe'}</p>
             <p
               className="text-4xl sm:text-6xl text-purple-300 tracking-widest font-light"
               style={{ textShadow: '0 0 40px #9333ea, 0 0 80px #7c3aed' }}
@@ -320,16 +327,6 @@ export function KonamiEasterEgg({ activated }: { activated: boolean }) {
             <p className="text-xs text-purple-600 tracking-[0.3em] mt-4">
               PABLO DURÃES · DEVELOPER
             </p>
-            <div className="mt-6 flex gap-2 justify-center flex-wrap">
-              {['↑', '↑', '↓', '↓', '←', '→'].map((k, i) => (
-                <span
-                  key={i}
-                  className="text-[10px] text-purple-500 border border-purple-700 px-2 py-1 font-mono"
-                >
-                  {k}
-                </span>
-              ))}
-            </div>
           </div>
         </div>
       </div>
@@ -337,10 +334,10 @@ export function KonamiEasterEgg({ activated }: { activated: boolean }) {
   );
 }
 
-export function useCountUp(
+function useCountUp(
   target: number,
   duration = 1800,
-  rootMargin = '0px 0px -40% 0px',
+  rootMargin = '0px 0px -20% 0px',
   threshold = 0.3
 ) {
   const [value, setValue] = useState(0);
@@ -350,6 +347,7 @@ export function useCountUp(
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const total = prefersReducedMotion() ? 0 : duration;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -357,7 +355,7 @@ export function useCountUp(
           started.current = true;
           const start = performance.now();
           const animate = (now: number) => {
-            const progress = Math.min((now - start) / duration, 1);
+            const progress = total === 0 ? 1 : Math.min((now - start) / total, 1);
             const eased = 1 - Math.pow(1 - progress, 3); // cubic ease-out
             setValue(Math.round(eased * target));
             if (progress < 1) requestAnimationFrame(animate);
@@ -386,16 +384,16 @@ export function AnimatedMetric({ rawValue, label }: { rawValue: string; label: s
 
   const display =
     target !== null ? `${prefix}${value.toLocaleString('pt-BR')}${suffix}` : rawValue;
+  const finalDisplay =
+    target !== null ? `${prefix}${target.toLocaleString('pt-BR')}${suffix}` : rawValue;
 
   return (
-    <div
-      ref={ref}
-      className="border border-purple-900 p-4 text-center hover:border-purple-700 transition-colors duration-300"
-    >
-      <span className="text-xl sm:text-2xl text-purple-300 font-mono tabular-nums">
+    <div ref={ref} className="flex flex-col">
+      <span className="sr-only">{finalDisplay} {label}</span>
+      <span aria-hidden="true" className="text-2xl text-purple-300 font-mono tabular-nums">
         {display}
       </span>
-      <p className="text-[9px] text-gray-500 tracking-widest mt-2 leading-4">{label}</p>
+      <span aria-hidden="true" className="text-xs text-gray-400 mt-1">{label}</span>
     </div>
   );
 }

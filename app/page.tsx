@@ -1,385 +1,378 @@
-'use client';
-import { useEffect, useState } from 'react';
 import {
   ScanLine,
   NoiseOverlay,
   FakeTerminal,
   TypewriterText,
   ScrambleText,
-  useKonamiCode,
   KonamiEasterEgg,
   AnimatedMetric,
 } from './components';
+import { site, navLinks, focusAreas, experiences, projects, skillGroups, aluraCourses } from './site';
 
-const lines = [
-  "CRIANDO",
-  " PRODUTOS",
-  "  QUE UNEM",
-  "   TECNOLOGIAS",
-  "    A NECESSIDADES.",
-];
-const fullText = lines.join('\n');
+const tagline = [
+  'CRIANDO',
+  ' PRODUTOS',
+  '  QUE UNEM',
+  '   TECNOLOGIAS',
+  '    A NECESSIDADES.',
+].join('\n');
 
-const navLinks = [
-  { label: 'GMAIL', href: 'mailto:pablosantosduraes6@gmail.com' },
-  { label: 'LINKEDIN', href: 'https://www.linkedin.com/in/pablo-dur%C3%A3es-781421320/' },
-];
-
-const heroStats = [
-  { value: '02', label: 'PROJETOS' },
-  { value: '16+', label: 'SKILLS' },
-  { value: '100+', label: 'USUÁRIOS' },
-];
-
-const projectMetrics = [
-  { value: '+100', label: 'USUÁRIOS ATIVOS NO NICE-APP' },
-  { value: '+20', label: 'EMPRESAS UTILIZANDO' },
-  { value: '+100000', label: 'ETIQUETAS GERADAS' },
-  { value: '↓', label: 'REDUÇÃO DE ERROS' },
-];
-
-const aluraCourses = [
-  'LÓGICA DE PROGRAMAÇÃO',
-  'HTML & CSS',
-  'REACT',
-  'REACT NATIVE',
-  'MACHINE LEARNING',
-  'INTELIGÊNCIA ARTIFICIAL',
-];
-
-const skills = [
-  { name: 'REACT', level: 'especialista' },
-  { name: 'REACT NATIVE', level: 'especialista' },
-  { name: 'NEXT.JS', level: 'especialista' },
-  { name: 'TYPESCRIPT', level: 'especialista' },
-  { name: 'NODE', level: 'proficiente' },
-  { name: 'JAVASCRIPT', level: 'proficiente' },
-  { name: 'TAILWIND', level: 'proficiente' },
-  { name: 'TRPC', level: 'proficiente' },
-  { name: 'TANSTACK QUERY', level: 'proficiente' },
-  { name: 'POSTGRES', level: 'proficiente' },
-  { name: 'MONGODB', level: 'proficiente' },
-  { name: 'STRIPE', level: 'proficiente' },
-  { name: 'CLERK', level: 'proficiente' },
-  { name: 'GIT', level: 'proficiente' },
-  { name: 'AGENTES IA', level: 'proficiente' },
-  { name: 'UX UI', level: 'proficiente' },
-];
-
-const skillLevels = [
-  { key: 'especialista', label: 'ESPECIALISTA', color: 'text-purple-400 border-purple-700' },
-  { key: 'proficiente', label: 'PROFICIENTE', color: 'text-gray-300 border-purple-900' },
-];
+function SectionHeading({ index, label, title }: { index: string; label: string; title: string }) {
+  return (
+    <div className="mb-10 sm:mb-12">
+      <p className="text-xs text-purple-400 tracking-[0.3em] mb-3">
+        {`// ${index}. ${label}`}
+      </p>
+      <h2 className="text-2xl sm:text-3xl text-gray-100 tracking-tight">{title}</h2>
+    </div>
+  );
+}
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-  const konamiActivated = useKonamiCode();
-
-  useEffect(() => { setMounted(true); }, []);
-
-  const scrollToProjects = () => {
-    document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const year = new Date().getFullYear();
 
   return (
-    <div style={{ background: 'linear-gradient(180deg, #000000 0%, #1a0030 35%, #0d0020 60%, #000000 100%)' }}>
-
-      <KonamiEasterEgg activated={konamiActivated} />
-
+    <>
+      <KonamiEasterEgg />
       <ScanLine />
       <NoiseOverlay />
 
-      <div className="fixed left-6 top-0 bottom-0 w-px bg-purple-800 opacity-40 z-30 hidden sm:block" />
-      <div className="fixed right-6 top-0 bottom-0 w-px bg-purple-800 opacity-20 z-30 hidden sm:block" />
-      <div className="fixed left-8 top-1/2 -translate-y-1/2 flex-col gap-8 opacity-20 text-[10px] text-purple-400 select-none z-30 hidden sm:flex">
-        {['01', '02', '03', '04', '05', '06', '07'].map((n) => (
-          <span key={n}>{n}</span>
-        ))}
-      </div>
+      <div aria-hidden="true" className="fixed left-6 top-0 bottom-0 w-px bg-purple-800/40 z-30 hidden lg:block" />
+      <div aria-hidden="true" className="fixed right-6 top-0 bottom-0 w-px bg-purple-800/20 z-30 hidden lg:block" />
 
-      <header
-        className="fixed top-0 left-0 right-0 z-[60] border-b border-purple-900"
-        style={{ background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' }}
+      <a
+        href="#conteudo"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:bg-purple-600 focus:text-white focus:px-4 focus:py-2"
       >
-        <div
-          className="flex items-center justify-between w-full px-4 sm:px-10 py-4 sm:grid sm:grid-cols-3 max-w-screen-xl mx-auto"
-          style={{ opacity: mounted ? 1 : 0, transform: mounted ? 'translateY(0)' : 'translateY(-16px)', transition: 'opacity 0.6s ease, transform 0.6s ease' }}
-        >
-          <h1 className="text-xs sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.3em] text-purple-300 font-mono">
+        Pular para o conteúdo
+      </a>
+
+      <header className="fixed top-0 left-0 right-0 z-[60] border-b border-purple-900/60 bg-black/80 backdrop-blur-md">
+        <div className="fade-in flex items-center justify-between max-w-6xl mx-auto px-5 sm:px-10 h-16">
+          <a href="#" className="text-sm tracking-[0.25em] text-purple-200 hover:text-white transition-colors">
             PABLO DURÃES.
-          </h1>
+          </a>
 
-          <div className="hidden sm:flex justify-center font-mono">
-            <h1 className="text-sm font-light tracking-[0.3em]">
-              <ScrambleText text="DEVELOPER" delay={600} duration={1400} />
-            </h1>
-          </div>
-
-          <nav className="flex justify-end">
-            <ul className="flex flex-row gap-3 sm:gap-6 text-[10px] sm:text-xs tracking-widest font-mono">
+          <nav aria-label="Navegação principal" className="hidden md:block">
+            <ul className="flex gap-8 text-sm text-gray-400">
               {navLinks.map(({ label, href }) => (
-                <li key={label}>
-                  <a href={href} target="_blank" rel="noopener noreferrer" className="relative group text-gray-400 hover:text-white transition-colors duration-200">
-                    <span className="sm:hidden">{label === 'LINKEDIN' ? 'LI' : label === 'GMAIL' ? 'GM' : 'CT'}</span>
-                    <span className="hidden sm:inline">{label}</span>
+                <li key={href}>
+                  <a href={href} className="relative group hover:text-white transition-colors duration-200">
+                    {label}
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-purple-400 group-hover:w-full transition-all duration-300" />
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
+
+          <a
+            href="#contato"
+            className="text-sm text-white border border-purple-600 hover:bg-purple-600 px-4 py-2 transition-colors duration-200"
+          >
+            Contato
+          </a>
         </div>
       </header>
 
-      <div className="flex flex-col min-h-screen px-4 sm:px-10 text-white relative pt-20">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col flex-1">
+      <main id="conteudo" className="text-gray-200 font-mono">
 
-          <div className="mt-6 sm:mt-8 ml-1" style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.8s ease 0.4s' }}>
-            <span className="text-[10px] text-purple-500 tracking-[0.3em] sm:tracking-[0.4em]">// BIO_INIT.exe</span>
-          </div>
+        {/* Hero */}
+        <section className="min-h-svh flex flex-col px-5 sm:px-10 pt-16">
+          <div className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row flex-1 items-start lg:items-center gap-12 py-16">
+            <div className="flex-1 min-w-0 fade-in" style={{ animationDelay: '0.2s' }}>
+              <h1 className="text-sm sm:text-base text-purple-300 tracking-[0.2em] mb-6">
+                PABLO DURÃES —{' '}
+                <ScrambleText text="DESENVOLVEDOR FULL STACK" delay={500} duration={1400} />
+              </h1>
 
-          <div
-            className="flex flex-col sm:flex-row flex-1 items-start sm:items-center ml-1 gap-6 sm:gap-0 py-8 sm:py-0"
-            style={{ opacity: mounted ? 1 : 0, transition: 'opacity 0.8s ease 0.6s' }}
-          >
-            {/* Texto principal */}
-            <div className="flex-1 w-full min-w-0">
-              <p className="text-2xl sm:text-4xl leading-9 sm:leading-10 tracking-widest text-gray-200 font-mono">
-                <TypewriterText text={fullText} />
+              <p className="text-xl sm:text-4xl leading-snug sm:leading-tight tracking-widest text-gray-100">
+                <TypewriterText text={tagline} />
               </p>
 
-              <button
-                onClick={scrollToProjects}
-                className="mt-8 text-[10px] tracking-[0.3em] font-mono text-gray-400 hover:text-purple-400 border border-purple-900 hover:border-purple-600 px-5 py-3 transition-all duration-300 group"
-              >
-                VER PROJETOS
-                <span className="ml-2 group-hover:translate-x-1 inline-block transition-transform duration-200">→</span>
-              </button>
+              <p className="mt-8 max-w-xl text-sm sm:text-base leading-relaxed text-gray-400">
+                Desenvolvo aplicações web e mobile com React, React Native e Next.js e
+                automatizo processos com Python e Power BI — soluções voltadas a
+                necessidades reais de negócio.
+              </p>
+
+              <div className="mt-10 flex flex-wrap gap-4">
+                <a
+                  href="#projetos"
+                  className="group text-sm text-white bg-purple-600 hover:bg-purple-500 px-6 py-3 transition-colors duration-200"
+                >
+                  Ver projetos
+                  <span className="ml-2 inline-block group-hover:translate-x-1 transition-transform duration-200">→</span>
+                </a>
+                <a
+                  href={site.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-gray-300 hover:text-white border border-purple-800 hover:border-purple-500 px-6 py-3 transition-colors duration-200"
+                >
+                  LinkedIn ↗
+                </a>
+              </div>
             </div>
 
-            <div className="hidden sm:flex flex-col items-center gap-5 px-10 opacity-70">
-              <div className="w-px h-12 bg-purple-800" />
-              {heroStats.map((stat, i) => (
-                <div key={stat.label} className="flex flex-col items-center gap-1">
-                  <span className="text-xl font-mono text-purple-300">{stat.value}</span>
-                  <span className="text-[8px] tracking-[0.2em] text-gray-600">{stat.label}</span>
-                  {i < heroStats.length - 1 && <div className="w-px h-5 bg-purple-900 mt-2" />}
+            <div className="w-full lg:w-auto fade-in" style={{ animationDelay: '0.5s' }}>
+              <FakeTerminal />
+            </div>
+          </div>
+        </section>
+
+        {/* Sobre */}
+        <section id="sobre" className="px-5 sm:px-10 py-20 sm:py-28">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading index="01" label="sobre" title="Sobre mim" />
+
+            <div className="grid lg:grid-cols-5 gap-12">
+              <div className="lg:col-span-2 space-y-5 text-sm sm:text-base leading-relaxed text-gray-400">
+                <p>
+                  Sou desenvolvedor de software com foco em aplicações web e mobile e em
+                  automação de processos. Trabalho principalmente com{' '}
+                  <span className="text-gray-200">Node.js, Next.js, React, React Native e TypeScript</span>,
+                  e também com Python, SQL, Power BI e GCP.
+                </p>
+                <p>
+                  Hoje sou Aprendiz no Centro Tecnológico Operacional da{' '}
+                  <span className="text-gray-200">Suzano S.A.</span>, onde desenvolvo soluções
+                  de BI e automações para relatórios gerenciais. Em paralelo, construo
+                  produtos web e mobile, com soluções em produção atendendo mais de 20
+                  empresas, e curso Engenharia de Software na UMC.
+                </p>
+                <p>
+                  Gosto de entender o problema antes de buscar a solução. Busco escrever
+                  código bem estruturado e entregar aplicações escaláveis, eficientes e
+                  que gerem resultado na prática.
+                </p>
+              </div>
+
+              <ul className="lg:col-span-3 grid sm:grid-cols-2 gap-4 content-start">
+                {focusAreas.map((area) => (
+                  <li key={area.title} className="border border-purple-900/70 bg-black/30 p-5">
+                    <h3 className="text-sm text-purple-300 mb-3">{area.title}</h3>
+                    <p className="text-sm leading-relaxed text-gray-400">{area.text}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Experiência */}
+        <section id="experiencia" className="px-5 sm:px-10 py-20 sm:py-28">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading index="02" label="experiência" title="Experiência profissional" />
+
+            <ol className="relative border-l border-purple-900/70 ml-1.5">
+              {experiences.map((exp) => (
+                <li key={`${exp.company}-${exp.period}`} className="relative pl-8 sm:pl-10 pb-2">
+                  <span aria-hidden="true" className="absolute -left-1.25 top-2 w-2.5 h-2.5 bg-purple-500 shadow-[0_0_12px_#a855f7]" />
+
+                  <article className="border border-purple-900/70 bg-black/30 p-6 sm:p-8">
+                    <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
+                      <div>
+                        <h3 className="text-lg text-gray-100">
+                          {exp.role}{' '}
+                          <span className="text-purple-300">@ {exp.company}</span>
+                        </h3>
+                        <p className="text-sm text-gray-400 mt-1">
+                          {exp.type} · {exp.team}
+                        </p>
+                      </div>
+                      <div className="text-xs text-gray-400 sm:text-right shrink-0">
+                        <p className="text-purple-300">{exp.period}</p>
+                        <p className="mt-1">{exp.location}</p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm leading-relaxed text-gray-400 mt-5">{exp.description}</p>
+
+                    <ul className="mt-4 space-y-2">
+                      {exp.highlights.map((h) => (
+                        <li key={h} className="flex gap-3 text-sm leading-relaxed text-gray-400">
+                          <span aria-hidden="true" className="text-purple-400">→</span>
+                          {h}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <ul className="flex flex-wrap gap-2 mt-6" aria-label="Tecnologias">
+                      {exp.stack.map((t) => (
+                        <li key={t} className="text-xs text-purple-300 bg-purple-950/50 border border-purple-900/70 px-2.5 py-1">
+                          {t}
+                        </li>
+                      ))}
+                    </ul>
+                  </article>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        {/* Projetos */}
+        <section id="projetos" className="px-5 sm:px-10 py-20 sm:py-28">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading index="03" label="projetos" title="Principais projetos" />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {projects.map((project, i) => (
+                <article
+                  key={project.name}
+                  className="group flex flex-col border border-purple-900/70 bg-black/30 p-6 sm:p-8 hover:border-purple-500 transition-colors duration-300"
+                >
+                  <div className="flex items-center justify-between text-xs text-gray-500">
+                    <span className="text-purple-400">{String(i + 1).padStart(2, '0')}</span>
+                    <span>{project.type}</span>
+                  </div>
+
+                  <h3 className="text-xl text-gray-100 mt-4 mb-3 group-hover:text-purple-200 transition-colors">
+                    {project.name}
+                  </h3>
+                  <p className="text-sm leading-relaxed text-gray-400">{project.description}</p>
+
+                  <div className="flex gap-10 mt-6 pt-6 border-t border-purple-900/50">
+                    {project.metrics.map((m) => (
+                      <AnimatedMetric key={m.label} rawValue={m.value} label={m.label} />
+                    ))}
+                  </div>
+
+                  <ul className="flex flex-wrap gap-2 mt-6" aria-label="Tecnologias">
+                    {project.stack.map((t) => (
+                      <li key={t} className="text-xs text-purple-300 bg-purple-950/50 border border-purple-900/70 px-2.5 py-1">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <a
+                    href={project.link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto pt-8 text-sm text-gray-300 hover:text-purple-300 transition-colors self-start"
+                  >
+                    {project.link.label} ↗
+                  </a>
+                </article>
+              ))}
+
+              <article className="md:col-span-2 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border border-dashed border-purple-900/70 p-6 sm:px-8">
+                <div className="flex items-center gap-4">
+                  <span className="text-xs text-purple-400">03</span>
+                  <h3 className="text-base text-gray-200">Kaizen</h3>
+                </div>
+                <p className="text-sm text-gray-500">Novo projeto em desenvolvimento — em breve.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Formação */}
+        <section id="formacao" className="px-5 sm:px-10 py-20 sm:py-28">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading index="04" label="formação" title="Formação & especializações" />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              <article className="border border-purple-900/70 bg-black/30 p-6 sm:p-8">
+                <p className="text-xs text-purple-400 tracking-[0.2em]">GRADUAÇÃO</p>
+                <h3 className="text-lg text-gray-100 mt-4">Bacharelado em Engenharia de Software</h3>
+                <p className="text-sm text-gray-400 mt-2">Universidade de Mogi das Cruzes — UMC</p>
+                <p className="inline-block text-xs text-gray-300 border border-purple-900/70 px-2.5 py-1 mt-6">
+                  Em andamento
+                </p>
+              </article>
+
+              <article className="border border-purple-900/70 bg-black/30 p-6 sm:p-8">
+                <p className="text-xs text-purple-400 tracking-[0.2em]">CURSOS COMPLEMENTARES</p>
+                <h3 className="text-lg text-gray-100 mt-4 mb-5">Alura</h3>
+                <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                  {aluraCourses.map((course) => (
+                    <li key={course} className="flex items-center gap-3 text-sm text-gray-400">
+                      <span className="w-1.5 h-1.5 bg-purple-500 shrink-0" />
+                      {course}
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        {/* Skills */}
+        <section id="skills" className="px-5 sm:px-10 py-20 sm:py-28">
+          <div className="max-w-6xl mx-auto">
+            <SectionHeading index="05" label="skills" title="Tecnologias" />
+
+            <div className="grid md:grid-cols-2 gap-6">
+              {skillGroups.map((group) => (
+                <div key={group.title} className="border border-purple-900/70 bg-black/30 p-6">
+                  <h3 className="text-sm text-purple-300 mb-5">{group.title}</h3>
+                  <ul className="flex flex-wrap gap-2">
+                    {group.items.map((item) => (
+                      <li
+                        key={item}
+                        className="text-sm text-gray-300 border border-purple-900/70 px-3 py-1.5 hover:border-purple-500 hover:text-white transition-colors duration-200"
+                      >
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
-              <div className="w-px h-12 bg-purple-800" />
-            </div>
-
-            <FakeTerminal />
-          </div>
-
-          <div className="flex justify-center pb-8 opacity-40">
-            <div className="flex flex-col items-center gap-2 animate-bounce">
-              <span className="text-[9px] text-purple-500 tracking-[0.3em] font-mono">SCROLL</span>
-              <svg width="12" height="18" viewBox="0 0 12 18" fill="none">
-                <path d="M6 0v14M1 9l5 6 5-6" stroke="#9333ea" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
             </div>
           </div>
+        </section>
 
-        </div>
-      </div>
-
-      <div id="projects" className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col">
-          <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// PROJECTS_INIT.exe</span>
-          <h1 className="text-purple-500 tracking-[0.4em] text-[13px] sm:text-[15px] mx-auto mb-8">PRINCIPAIS PROJETOS</h1>
-
-          {/* Cards de projeto */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 w-full max-w-4xl mx-auto">
-            <div className="border border-purple-900 p-4 sm:p-6 hover:border-purple-500 transition-colors duration-300 group">
-              <span className="text-[10px] text-purple-500 tracking-widest">01_</span>
-              <h2 className="text-sm tracking-widest mt-2 mb-3 group-hover:text-purple-300 transition-colors">NICE APP</h2>
-              <p className="text-xs text-gray-500 leading-6 tracking-wider text-justify">
-                APLICATIVO MOBILE EM REACT NATIVE FOCADO EM PSICOTERAPIA CORPORATIVA, QUE PERMITE ÀS EMPRESAS ACOMPANHAR O BEM-ESTAR PSICOLÓGICO DOS COLABORADORES POR MEIO DE TESTES E ESCALAS.
-              </p>
-              <div className="flex flex-wrap gap-2 sm:gap-3 mt-4">
-                {['REACT NATIVE', 'TYPESCRIPT', 'STRIPE', 'TRPC'].map(t => (
-                  <span key={t} className="text-[10px] text-purple-700 border border-purple-900 px-2 py-1">{t}</span>
-                ))}
-              </div>
-              <a
-                href="https://www.linkedin.com/posts/pablo-dur%C3%A3es-781421320_programaaexao-projeto-reactnative-ugcPost-7434066766345134080-incI"
-                target="_blank" rel="noopener noreferrer"
-                className="block mt-4 text-[12px] text-gray-600 hover:text-purple-400 tracking-widest transition-colors"
-              >
-                VER PROJETO →
-              </a>
-            </div>
-
-            <div className="border border-purple-900 p-4 sm:p-6 hover:border-purple-500 transition-colors duration-300 group">
-              <span className="text-[10px] text-purple-500 tracking-widest">02_</span>
-              <h2 className="text-sm tracking-widest mt-2 mb-3 group-hover:text-purple-300 transition-colors">QUICK TAG</h2>
-              <p className="text-xs text-gray-400 leading-6 tracking-wider text-justify">
-                SOLUÇÃO INTELIGENTE PARA CRIAÇÃO/GESTÃO DE ETIQUETAS E INFORMAÇÕES DE PRODUTOS, QUE AUTOMATIZA PROCESSOS, REDUZ ERROS E AUMENTA A EFICIÊNCIA OPERACIONAL.
-              </p>
-              <div className="flex flex-wrap gap-2 sm:gap-3 mt-4">
-                {['REACT', 'NEXT', 'TYPESCRIPT', 'CLERK'].map(t => (
-                  <span key={t} className="text-[10px] text-purple-700 border border-purple-900 px-2 py-1">{t}</span>
-                ))}
-              </div>
-              <a
-                href="https://www.quicktag.com.br/"
-                target="_blank" rel="noopener noreferrer"
-                className="block mt-4 text-[12px] text-gray-600 hover:text-purple-400 tracking-widest transition-colors"
-              >
-                VER PROJETO →
-              </a>
-            </div>
-
-            <div className="border border-purple-950 p-4 sm:p-6 opacity-50 group md:col-span-2 md:max-w-sm md:mx-auto w-full">
-              <div className="flex items-center gap-3 mb-2">
-                <span className="text-[10px] text-purple-800 tracking-widest">03_</span>
-                <span className="text-[9px] text-purple-700 border border-purple-900 px-2 py-0.5 tracking-widest animate-pulse">EM CONSTRUÇÃO</span>
-              </div>
-              <h2 className="text-sm tracking-widest text-gray-700">KAIZEN</h2>
-              <div className="mt-4 flex gap-1">
-                {[...Array(8)].map((_, i) => (
-                  <div key={i} className="h-1 flex-1 bg-purple-950 rounded-sm" style={{ opacity: i < 5 ? 0.8 : 0.2 }} />
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-4xl mx-auto mt-10 w-full">
-            {projectMetrics.map((m) => (
-              <AnimatedMetric key={m.label} rawValue={m.value} label={m.label} />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col">
-          <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// EDUCATION_INIT.exe</span>
-          <h1 className="text-purple-500 tracking-[0.4em] text-[13px] sm:text-[15px] mx-auto mb-10">FORMAÇÃO & ESPECIALIZAÇÕES</h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto w-full">
-
-            <div className="border border-purple-800 p-5 sm:p-6 hover:border-purple-500 transition-colors duration-300">
-              <span className="text-[9px] text-purple-600 tracking-[0.3em]">GRADUAÇÃO</span>
-              <h2 className="text-sm tracking-widest mt-3 mb-1 text-gray-200">BACHARELADO EM ENGENHARIA DE SOFTWARE</h2>
-              <p className="text-[11px] text-purple-400 tracking-widest mb-3">UNIVERSIDADE DE MOGI DAS CRUZES — UMC</p>
-              <div className="flex items-center gap-3 mt-4">
-                <span className="text-[11px] text-purple-700 border border-purple-900 px-2 py-1 tracking-widest animate-pulse">1º SEMESTRE</span>
-                <span className="text-[11px] text-gray-700 tracking-widest">EM ANDAMENTO</span>
-              </div>
-              <div className="mt-5 h-px bg-purple-950 relative">
-                <div className="absolute top-0 left-0 h-px bg-purple-600" style={{ width: '12.5%' }} />
-              </div>
-              <p className="text-[11px] text-gray-700 tracking-widest mt-1">PROGRESSO — 1/8 SEMESTRES</p>
-            </div>
-
-            <div className="border border-purple-900 p-5 sm:p-6 hover:border-purple-500 transition-colors duration-300">
-              <span className="text-[9px] text-purple-600 tracking-[0.3em]">CURSOS EXTRACURRICULARES</span>
-              <h2 className="text-sm tracking-widest mt-3 mb-4 text-gray-200">ALURA</h2>
-              <div className="flex flex-col gap-2">
-                {aluraCourses.map((course, i) => (
-                  <div key={course} className="flex items-center gap-3">
-                    <span className="text-[9px] text-purple-800 w-4 flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                    <span className="w-1.5 h-1.5 rounded-full bg-purple-700 flex-shrink-0" />
-                    <span className="text-[10px] text-gray-400 tracking-widest">{course}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-      <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-20">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col">
-          <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6 sm:mb-10">// SKILLS_INIT.exe</span>
-          <h1 className="text-purple-500 tracking-[0.4em] text-[13px] sm:text-[15px] mx-auto mb-3">SKILLS</h1>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-8">
-            {skillLevels.map(({ label, color }) => (
-              <div key={label} className="flex items-center gap-2">
-                <span className={`w-1.5 h-1.5 rounded-full border ${color.includes('purple-4') ? 'bg-purple-400' : color.includes('gray-3') ? 'bg-gray-500' : 'bg-purple-950'}`} />
-                <span className="text-[14px] text-gray-600 tracking-widest">{label}</span>
-              </div>
-            ))}
-          </div>
-
-          {skillLevels.map(({ key, color }) => (
-            <div key={key} className="mb-6 max-w-2xl mx-auto w-full">
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-                {skills
-                  .filter(s => s.level === key)
-                  .map(({ name }) => (
-                    <div
-                      key={name}
-                      className={`border px-3 sm:px-4 py-3 text-[10px] sm:text-[11px] tracking-widest hover:border-purple-500 hover:text-purple-300 transition-all duration-200 text-center ${color}`}
-                    >
-                      {name}
-                    </div>
-                  ))}
-              </div>
-            </div>
-          ))}
-
-          <div className="items-center justify-center mt-6">
-            <p className="text-center text-[15px] text-purple-500 tracking-[0.4em] opacity-30 animate-pulse">
-              01000100 01010101 01010010 01000001 01000101 01010011
+        {/* Contato */}
+        <section id="contato" className="px-5 sm:px-10 py-24 sm:py-32">
+          <div className="max-w-3xl mx-auto text-center">
+            <p className="text-xs text-purple-400 tracking-[0.3em] mb-4">{'// 06. contato'}</p>
+            <h2 className="text-3xl sm:text-5xl text-gray-100 tracking-tight mb-6">Vamos conversar?</h2>
+            <p className="text-sm sm:text-base text-gray-400 leading-relaxed mb-10">
+              Estou aberto a oportunidades, projetos e colaborações.
+              Me mande uma mensagem — respondo rapidamente.
             </p>
-          </div>
-        </div>
-      </div>
 
-      <div className="flex flex-col px-4 sm:px-10 text-white font-mono relative py-16 sm:py-24">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col items-center text-center">
-          <span className="text-[10px] text-purple-500 tracking-[0.4em] mb-6">// CONTACT_INIT.exe</span>
-          <h1 className="text-2xl sm:text-4xl tracking-[0.3em] text-gray-200 mb-4">VAMOS CONVERSAR?</h1>
-          <p className="text-xs text-gray-600 tracking-widest mb-10 max-w-sm leading-6">
-            ABERTO A OPORTUNIDADES, PROJETOS E COLABORAÇÕES.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4">
-            <a
-              href="mailto:pablosantosduraes6@gmail.com"
-              className="text-[11px] tracking-[0.3em] font-mono text-gray-500 hover:text-gray-300 border border-purple-950 hover:border-purple-700 px-6 py-3 transition-all duration-300"
-            >
-              GMAIL →
-            </a>
-            <a
-              href="https://www.linkedin.com/in/pablo-dur%C3%A3es-781421320/"
-              target="_blank" rel="noopener noreferrer"
-              className="text-[11px] tracking-[0.3em] font-mono text-gray-500 hover:text-gray-300 border border-purple-950 hover:border-purple-700 px-6 py-3 transition-all duration-300"
-            >
-              LINKEDIN →
-            </a>
-          </div>
-
-          <div className="mt-16 flex flex-col items-center gap-3 opacity-30 hover:opacity-30 transition-opacity duration-500">
-            <p className="text-[9px] text-purple-600 tracking-[0.4em] font-mono">// ALGO ESTÁ ESCONDIDO AQUI</p>
-            <div className="flex items-center gap-1.5">
-              {['↑', '↑', '↓', '↓', '←', '→'].map((k, i) => (
-                <span key={i} className="text-[9px] text-purple-800 border border-purple-900 px-1.5 py-0.5 font-mono">
-                  {k}
-                </span>
-              ))}
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <a
+                href={`mailto:${site.email}`}
+                className="text-sm text-white bg-purple-600 hover:bg-purple-500 px-6 py-3 transition-colors duration-200 break-all"
+              >
+                {site.email}
+              </a>
+              <a
+                href={site.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-gray-300 hover:text-white border border-purple-800 hover:border-purple-500 px-6 py-3 transition-colors duration-200"
+              >
+                LinkedIn ↗
+              </a>
             </div>
-            <p className="text-[8px] text-purple-900 tracking-[0.3em] font-mono">PRESSIONE NO TECLADO</p>
-          </div>
-        </div>
-      </div>
 
-      <footer className="border-t border-purple-950 px-4 sm:px-10 py-6 font-mono">
-        <div className="w-full max-w-screen-xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
-          <span className="text-[9px] text-gray-700 tracking-widest">
-            © {new Date().getFullYear()} PABLO DURÃES. TODOS OS DIREITOS RESERVADOS.
-          </span>
-          <span className="text-[9px] text-purple-900 tracking-widest animate-pulse">
-            BUILT WITH NEXT.JS + TYPESCRIPT
-          </span>
+            <div className="mt-20 flex flex-col items-center gap-3 text-purple-400/70 hover:text-purple-300 transition-colors duration-500">
+              <p className="text-xs tracking-[0.3em]">{'// ALGO ESTÁ ESCONDIDO AQUI'}</p>
+              <div className="flex items-center gap-1.5" aria-label="Seta para cima, cima, baixo, baixo, esquerda, direita">
+                {['↑', '↑', '↓', '↓', '←', '→'].map((k, i) => (
+                  <kbd key={i} aria-hidden="true" className="text-xs border border-purple-800 px-2 py-1 font-mono">
+                    {k}
+                  </kbd>
+                ))}
+              </div>
+              <p className="text-[11px] tracking-[0.3em] text-gray-500">PRESSIONE NO TECLADO</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-purple-900/50 px-5 sm:px-10 py-8 font-mono">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-500">
+          <span>© {year} Pablo Durães. Todos os direitos reservados.</span>
+          <span>Desenvolvido com Next.js e TypeScript</span>
         </div>
       </footer>
-
-    </div>
+    </>
   );
 }

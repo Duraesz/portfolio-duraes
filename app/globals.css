@@ -1,36 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #000000;
+  --foreground: #e5e7eb;
+  color-scheme: dark;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-jetbrains), ui-monospace, monospace;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  /* Fundo próprio no html impede que o gradiente do body se propague e se repita a cada viewport */
+  background: var(--background);
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
-
-/* Registrar fonte local (coloque os arquivos .ttf em public/assets/fonts ou ajuste o caminho) */
-@font-face {
-  font-family: 'JetBrainsMonoLocal';
-  src: url('/assets/fonts/JetBrainsMono-VariableFont_wght.ttf') format('truetype');
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
-
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: 'JetBrainsMonoLocal', ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  background: linear-gradient(180deg, #000000 0%, #1a0030 30%, #0d0020 65%, #000000 100%);
+  font-family: var(--font-mono);
+}
+
+::selection {
+  background: #7e22ce;
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid #a855f7;
+  outline-offset: 3px;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fade-in 0.7s ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
