@@ -1,40 +1,24 @@
 'use client';
 import { useEffect, useState, useRef } from 'react';
-import { site } from './site';
 
 function prefersReducedMotion() {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 
-const terminalLines = [
-  { text: '$ whoami', isCommand: true },
-  { text: '> pablo.duraes', isCommand: false },
-  { text: '$ location', isCommand: true },
-  { text: '> são paulo, br', isCommand: false },
-  { text: '$ status', isCommand: true },
-  { text: '> aberto a projetos e colaborações ✓', isCommand: false },
-  { text: '$ experience', isCommand: true },
-  { text: '> aprendiz @ suzano s.a.', isCommand: false },
-  { text: '$ stack --top', isCommand: true },
-  { text: '> react, react-native, next, node', isCommand: false },
-  { text: '$ contact', isCommand: true },
-  { text: `> ${site.email}`, isCommand: false },
-];
-
-export function FakeTerminal() {
+export function FakeTerminal({ lines }: { lines: { text: string; isCommand: boolean }[] }) {
   const [visibleLines, setVisibleLines] = useState(0);
 
   useEffect(() => {
     const reduce = prefersReducedMotion();
     let current = 0;
     const interval = setInterval(() => {
-      current = reduce ? terminalLines.length : current + 1;
+      current = reduce ? lines.length : current + 1;
       setVisibleLines(current);
-      if (current >= terminalLines.length) clearInterval(interval);
+      if (current >= lines.length) clearInterval(interval);
     }, reduce ? 0 : 450);
     return () => clearInterval(interval);
-  }, []);
+  }, [lines.length]);
 
   return (
     <div
@@ -48,12 +32,12 @@ export function FakeTerminal() {
         <span className="ml-2 text-xs text-gray-500">pablo@duraes: ~</span>
       </div>
       <div className="flex flex-col gap-1 p-5 text-[13px] min-h-64 break-all">
-        {terminalLines.slice(0, visibleLines).map((line, i) => (
+        {lines.slice(0, visibleLines).map((line, i) => (
           <span key={i} className={line.isCommand ? 'text-purple-400' : 'text-gray-300'}>
             {line.text}
           </span>
         ))}
-        {visibleLines < terminalLines.length && (
+        {visibleLines < lines.length && (
           <span className="animate-pulse text-purple-400">█</span>
         )}
       </div>
@@ -313,7 +297,7 @@ export function KonamiEasterEgg() {
         }
         .konami-reveal { animation: konamiReveal 0.4s ease forwards; }
       `}</style>
-      <div className="fixed inset-0 z-[200] pointer-events-none">
+      <div className="fixed inset-0 z-200 pointer-events-none">
         <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <div className="konami-reveal font-mono text-center">
@@ -374,7 +358,7 @@ function useCountUp(
 }
 
 
-export function AnimatedMetric({ rawValue, label }: { rawValue: string; label: string }) {
+export function AnimatedMetric({ rawValue, label, locale }: { rawValue: string; label: string; locale: string }) {
   const match = rawValue.match(/^([+>]?)(\d+)([kK%]?)$/);
   const target = match ? parseInt(match[2], 10) : null;
   const prefix = match ? match[1] : '';
@@ -383,9 +367,9 @@ export function AnimatedMetric({ rawValue, label }: { rawValue: string; label: s
   const { ref, value } = useCountUp(target ?? 0);
 
   const display =
-    target !== null ? `${prefix}${value.toLocaleString('pt-BR')}${suffix}` : rawValue;
+    target !== null ? `${prefix}${value.toLocaleString(locale)}${suffix}` : rawValue;
   const finalDisplay =
-    target !== null ? `${prefix}${target.toLocaleString('pt-BR')}${suffix}` : rawValue;
+    target !== null ? `${prefix}${target.toLocaleString(locale)}${suffix}` : rawValue;
 
   return (
     <div ref={ref} className="flex flex-col">

@@ -1,11 +1,14 @@
 import { ImageResponse } from 'next/og';
-import { site } from './site';
+import { site, content, hasLocale } from '../site';
 
-export const alt = `${site.name} — ${site.role}`;
+export const alt = `${site.name} — ${content.pt.role}`;
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
-export default function Image() {
+export default async function Image({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
+  const t = content[hasLocale(lang) ? lang : 'pt'];
+
   return new ImageResponse(
     (
       <div
@@ -22,12 +25,12 @@ export default function Image() {
         }}
       >
         <div style={{ display: 'flex', fontSize: 28, color: '#c084fc', letterSpacing: 6 }}>
-          {'// PORTFÓLIO'}
+          {t.ui.ogLabel}
         </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <div style={{ fontSize: 84, letterSpacing: 4 }}>PABLO DURÃES.</div>
-          <div style={{ fontSize: 40, color: '#d8b4fe', marginTop: 20 }}>{site.role}</div>
-          <div style={{ fontSize: 30, color: '#9ca3af', marginTop: 12 }}>{site.headline}</div>
+          <div style={{ fontSize: 40, color: '#d8b4fe', marginTop: 20 }}>{t.role}</div>
+          <div style={{ fontSize: 30, color: '#9ca3af', marginTop: 12 }}>{t.headline}</div>
         </div>
         <div style={{ display: 'flex', height: 4, width: 200, background: '#9333ea' }} />
       </div>

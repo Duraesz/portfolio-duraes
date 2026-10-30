@@ -16,16 +16,19 @@ Reúne os principais projetos, a formação, as tecnologias que uso e as formas 
 
 ```
 app/
-├── site.ts               # Conteúdo do site: dados pessoais, projetos, skills e formação
-├── page.tsx              # Página principal (Server Component)
+├── site.ts               # Conteúdo do site em português e inglês: dados pessoais, experiência, projetos, skills e formação
 ├── components.tsx        # Componentes interativos (terminal, typewriter, métricas animadas…)
-├── layout.tsx            # Layout raiz, fontes e metadados de SEO
-├── opengraph-image.tsx   # Imagem de prévia para LinkedIn, WhatsApp etc.
+├── [lang]/
+│   ├── page.tsx          # Página principal (Server Component), renderizada por idioma
+│   ├── layout.tsx        # Layout raiz, fontes e metadados de SEO por idioma
+│   └── opengraph-image.tsx # Imagem de prévia para LinkedIn, WhatsApp etc.
 ├── icon.png              # Favicon
 └── globals.css           # Estilos globais e tema
 ```
 
-Para atualizar textos, projetos ou skills, edite apenas `app/site.ts`.
+O português é servido em `/` e o inglês em `/en` (veja `next.config.ts`).
+
+Para atualizar textos, projetos ou skills, edite apenas `app/site.ts` — nos dois idiomas.
 
 ## Rodando localmente
 
