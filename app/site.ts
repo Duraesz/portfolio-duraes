@@ -119,6 +119,7 @@ const pt = {
   experienceSection: { label: 'experiência', title: 'Experiência profissional' },
   experiences: [
     {
+      
       role: 'Análise de Dados',
       type: 'Aprendiz',
       company: 'Suzano S.A.',
